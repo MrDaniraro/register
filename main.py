@@ -1,26 +1,17 @@
-def main():
-    open('authorization.txt', 'a').close()
-    main_ = input('Если вы хотите авторизоваться, введите 1, если '
-                  'зарегистрироваться, введите 2. ')
-    if main_ == '1':
-        authorization()
-    elif main_ == '2':
-        registration()
-    else:
-        raise ValueError('Выберите один и предложенных вариантов.')
+FILENAME = 'authorization.txt'
 
 
 def authorization():
     login = input('Введите ваш логин: ')
     password = input('Введите ваш пароль: ')
-    with open('authorization.txt', 'r', encoding='UTF-8') as file:
-        text = file.read().split('\n')
-        for data in text:
+    with open(FILENAME, 'r', encoding='UTF-8') as file:
+        user_data = file.read().split('\n')
+        for data in user_data:
             if login == data:
-                index = text.index(data)
-                if password == text[index + 1]:
+                index = user_data.index(data)
+                if password == user_data[index + 1]:
                     print('Вы вошли в аккаунт.')
-                    break
+                break
         else:
             raise ValueError('Неверный логин или пароль.')
 
@@ -28,7 +19,7 @@ def authorization():
 def registration():
     login = input('Придумайте ваш логин: ')
     if 3 <= len(login) <= 20:
-        with open('authorization.txt', 'a', encoding='UTF-8') as file:
+        with open(FILENAME, 'a', encoding='UTF-8') as file:
             file.write(f'\n{login}')
     else:
         raise ValueError('Логин должен быть не менее 3 и не более 20 '
@@ -43,4 +34,17 @@ def registration():
                          ' символов.')
 
 
-main()
+def main():
+    open(FILENAME, 'a').close()
+    action_choice = input('Если вы хотите авторизоваться, введите 1, если '
+                  'зарегистрироваться, введите 2. ')
+    if action_choice == '1':
+        authorization()
+    elif action_choice == '2':
+        registration()
+    else:
+        raise ValueError('Выберите один и предложенных вариантов.')
+
+
+if __name__ == '__main__':
+    main()
